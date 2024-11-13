@@ -1,0 +1,63 @@
+@page "/dashboard/{userName}"
+@using passfrontend.Models
+@using passfrontend.Services
+@using Blazored.LocalStorage
+@inject UsersApiServices UsersApiService
+@inject UserStateService UserState
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+<PageTitle>Dashboard</PageTitle>
+
+<h3>User Details</h3>
+
+@if (UserState.CurrentUser == null)
+{
+    <p>User not found.</p>
+    <a href="/createlogin">Create login</a>
+    <p>@message</p>
+}
+else
+{
+    <p>ID: @UserState.CurrentUser.Id</p>
+    <p><strong>Username:</strong> @UserState.CurrentUser.UserName</p>
+    <p><strong>Password:</strong> @UserState.CurrentUser.Password</p> <!-- Consider security implications of displaying passwords -->
+    
+    @if(!string.IsNullOrEmpty(message)){
+        <h1>@message</h1>
+    }
+    <button @onclick=LogOut>Log out</button>
+}
+
+@code {
+    [Parameter]
+    public string userName {get; set;}
+    public  Application application = new();
+    public string ApplicationName {get; set;}
+    public string ApplicationUserName {get; set;}
+    public string ApplicationPassword {get; set;}
+    public string message {get; set;}
+
+    protected override async void OnInitialized(){
+        var userName = await LocalStorage.GetItemAsync<string>("user");
+        if(!string.IsNullOrEmpty(userName)){
+            try{
+                var response = await UsersApiService.GetUserByUserName(userName);
+                if(response != null){
+                    UserState.CurrentUser = response;
+                }
+            }
+            catch(Exception ex){
+                message = $"session has expired error: {ex}";
+            }
+        }
+        StateHasChanged();
+    }
+    
+    public async Task GetUsersPasswords(){
+
+    }
+    public async Task LogOut(){
+        UserState.LogOut();
+        await LocalStorage.RemoveItemAsync("user");
+    }
+}

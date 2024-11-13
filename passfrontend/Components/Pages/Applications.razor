@@ -1,0 +1,59 @@
+@using passfrontend.Models
+@using passfrontend.Services
+@using Blazored.LocalStorage
+@page "/applications"
+@inject UsersApiServices UsersApiService
+@inject UserStateService UserState
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+<div class="row">
+    <p>add application</p>
+    <p>Appliaction Name: </p><input @bind=ApplicationName>
+    <p>Appliaction UserName: </p><input @bind=ApplicationUserName>
+    <p>Appliaction Password: </p><input @bind=ApplicationPassword>
+    <button @onclick=CreateApplication>Create Me</button>
+    <p class="text-danger">@message</p>
+</div>
+
+@code{
+    public  Application application = new();
+    public string ApplicationName {get; set;}
+    public string ApplicationUserName {get; set;}
+    public string ApplicationPassword {get; set;}
+    public string message {get; set;}
+
+    protected override async void OnInitialized(){
+        var userName = await LocalStorage.GetItemAsync<string>("user");
+        if(!string.IsNullOrEmpty(userName)){
+            try{
+                var response = await UsersApiService.GetUserByUserName(userName);
+                if(response != null){
+                    UserState.CurrentUser = response;
+                }
+            }
+            catch(Exception ex){
+                message = $"session has expired error";
+            }
+        }
+        StateHasChanged();
+    }
+    public async Task CreateApplication()
+    {
+        if (string.IsNullOrEmpty(ApplicationName) || string.IsNullOrEmpty(ApplicationUserName) || string.IsNullOrEmpty(ApplicationPassword))
+        {
+            message = "Please fill in all the fields.";
+            return;
+        }
+
+        application.ApplicationName = ApplicationName;
+        application.ApplicationUsername = ApplicationUserName;
+        application.ApplicationPassword = ApplicationPassword;
+        application.UserId = UserState.CurrentUser.Id; 
+        try{
+            message = await UsersApiService.CreateApplication(application);
+        }
+        catch(Exception ex){
+            message = $"Error: {ex.Message}";
+        }
+    }
+}
