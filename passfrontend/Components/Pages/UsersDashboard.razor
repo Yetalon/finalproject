@@ -5,59 +5,92 @@
 @inject UsersApiServices UsersApiService
 @inject UserStateService UserState
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager Navigate
 
 <PageTitle>Dashboard</PageTitle>
 
 <h3>User Details</h3>
-
-@if (UserState.CurrentUser == null)
-{
-    <p>User not found.</p>
-    <a href="/createlogin">Create login</a>
-    <p>@message</p>
-}
-else
-{
-    <p>ID: @UserState.CurrentUser.Id</p>
-    <p><strong>Username:</strong> @UserState.CurrentUser.UserName</p>
-    <p><strong>Password:</strong> @UserState.CurrentUser.Password</p> <!-- Consider security implications of displaying passwords -->
-    
-    @if(!string.IsNullOrEmpty(message)){
-        <h1>@message</h1>
+<div class="row">
+    @if (UserState.CurrentUser == null)
+    {
+        <div class="col-md-12">
+            <p>User not found.</p>
+            <a href="/createlogin">Create login</a>
+            <p>@message</p>
+        </div>
     }
-    <button @onclick=LogOut>Log out</button>
-}
+    else
+    {
+        <div class="col-md-12">
+            <p><strong>Username:</strong> @UserState.CurrentUser.UserName</p>
+            @foreach(var app in Allapplications){
+                <div class="card p-3 mb-3 mx-auto" style="max-width: 400px;">
+                    <div class="card-body">
+                        <h5 class="card-title">@app.ApplicationName</h5>
+                        <p class="card-text">
+                            <strong>Username:</strong> @app.ApplicationUsername <br />
+                            <strong>Password:</strong> @app.ApplicationPassword <!-- Hide actual password for security -->
+                        </p>
+                        @* https://www.telerik.com/blogs/how-to-pass-arguments-to-your-onclick-functions-blazor *@
+                        <button class="btn btn-danger ms-2" @onclick="() => DeleteApp(app.Id)">Delete</button>
+                    </div>
+                </div>
+            }
+            <button @onclick=LogOut>Log out</button>
+        </div>
+    }
+</div>
 
 @code {
     [Parameter]
     public string userName {get; set;}
-    public  Application application = new();
+    public List<Application> Allapplications = new();
     public string ApplicationName {get; set;}
     public string ApplicationUserName {get; set;}
     public string ApplicationPassword {get; set;}
     public string message {get; set;}
 
-    protected override async void OnInitialized(){
-        var userName = await LocalStorage.GetItemAsync<string>("user");
-        if(!string.IsNullOrEmpty(userName)){
-            try{
-                var response = await UsersApiService.GetUserByUserName(userName);
-                if(response != null){
-                    UserState.CurrentUser = response;
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        if(firstRender){
+            var userName = await LocalStorage.GetItemAsync<string>("user");
+            if(!string.IsNullOrEmpty(userName)){
+                try{
+                    var response = await UsersApiService.GetUserByUserName(userName);
+                    if(response != null){
+                        UserState.CurrentUser = response;
+                    }
+                }
+                catch(Exception ex){
+                    message = $"session has expired error: {ex}";
                 }
             }
-            catch(Exception ex){
-                message = $"session has expired error: {ex}";
-            }
+            Allapplications = (await UsersApiService.GetApplicationsAsync(UserState.CurrentUser.Id)).ToList();
+            StateHasChanged();
         }
-        StateHasChanged();
     }
     
-    public async Task GetUsersPasswords(){
-
-    }
     public async Task LogOut(){
         UserState.LogOut();
         await LocalStorage.RemoveItemAsync("user");
+        Navigate.NavigateTo("/");
+    }
+
+    public async Task DeleteApp(long appId){
+        try{
+            var response = await UsersApiService.DeleteApp(appId);
+            if(response){
+                Application appToRemove = Allapplications.FirstOrDefault(app => app.Id == appId);
+                if(appToRemove != null){
+                    Allapplications.Remove(appToRemove);
+                    StateHasChanged();
+                }
+            }
+            else{
+                message = "failed to delete the application";
+            }
+        }
+        catch(Exception ex){
+            message = $"Error: {ex}";
+        }
     }
 }

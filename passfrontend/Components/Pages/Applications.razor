@@ -5,55 +5,97 @@
 @inject UsersApiServices UsersApiService
 @inject UserStateService UserState
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager Navigate
+@inject GetWords AllWords
 
-<div class="row">
-    <p>add application</p>
-    <p>Appliaction Name: </p><input @bind=ApplicationName>
-    <p>Appliaction UserName: </p><input @bind=ApplicationUserName>
-    <p>Appliaction Password: </p><input @bind=ApplicationPassword>
-    <button @onclick=CreateApplication>Create Me</button>
-    <p class="text-danger">@message</p>
+<div class="card p-4 mx-auto" style="max-width: 400px;">
+    <h3>Add Application</h3>
+    <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" @bind=ApplicationName placeholder="Enter Application Name">
+    </div>
+    <div class="form-group mt-2">
+        <label>User Name</label>
+        <input class="form-control"  @bind=ApplicationUserName placeholder="Enter User Name">
+    </div>
+        <div class="form-group mt-2">
+        <label class="mb-2">Password</label> 
+        <br>
+        <button class="mb-3 btn btn-dark btn-outline-light" @onclick=GeneratePassPhrase>Generate random passphrase</button>
+        <input class="form-control" type="password" @bind=ApplicationPassword placeholder="Enter Password">
+    </div>
+    <button class="btn btn-primary mt-3 w-100" @onclick="CreateApplication">Create app</button>
+    @if(!string.IsNullOrEmpty(message)){
+        <div class="text-success mt-3">@message</div>
+    }
+    else{
+        <div class="text-danger mt-3">@error</div>
+    }
 </div>
 
 @code{
     public  Application application = new();
-    public string ApplicationName {get; set;}
-    public string ApplicationUserName {get; set;}
-    public string ApplicationPassword {get; set;}
-    public string message {get; set;}
+    public required string ApplicationName {get; set;}
+    public required string ApplicationUserName {get; set;}
+    public required string ApplicationPassword {get; set;}
+    public string? message {get; set;}
+    public string? error {get; set;}
+    public string? PassPhrase {get; set;}
 
-    protected override async void OnInitialized(){
-        var userName = await LocalStorage.GetItemAsync<string>("user");
-        if(!string.IsNullOrEmpty(userName)){
-            try{
-                var response = await UsersApiService.GetUserByUserName(userName);
-                if(response != null){
-                    UserState.CurrentUser = response;
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        if(firstRender){
+            AllWords.FillAllWords();
+            var userName = await LocalStorage.GetItemAsync<string>("user");
+            if(!string.IsNullOrEmpty(userName)){
+                try{
+                    var response = await UsersApiService.GetUserByUserName(userName);
+                    if(response != null){
+                        UserState.CurrentUser = response;
+                    }
+                    else{
+                        Navigate.NavigateTo("/");
+                    }
+                }
+                catch{
+                    Navigate.NavigateTo("/");
                 }
             }
-            catch(Exception ex){
-                message = $"session has expired error";
+            else{
+                Navigate.NavigateTo("/");
             }
+            StateHasChanged();
         }
-        StateHasChanged();
     }
-    public async Task CreateApplication()
-    {
+    public async Task CreateApplication(){
         if (string.IsNullOrEmpty(ApplicationName) || string.IsNullOrEmpty(ApplicationUserName) || string.IsNullOrEmpty(ApplicationPassword))
         {
-            message = "Please fill in all the fields.";
+            message = null;
+            error = "Please fill in all the fields.";
             return;
         }
 
         application.ApplicationName = ApplicationName;
         application.ApplicationUsername = ApplicationUserName;
         application.ApplicationPassword = ApplicationPassword;
-        application.UserId = UserState.CurrentUser.Id; 
+        if(UserState.CurrentUser != null){
+            application.UserId = UserState.CurrentUser.Id; 
+        }
         try{
             message = await UsersApiService.CreateApplication(application);
+            error = null; 
         }
         catch(Exception ex){
-            message = $"Error: {ex.Message}";
+            error = $"Error: {ex.Message}";
         }
+    }
+    public void GeneratePassPhrase(){
+        
+        Random random = new();
+        for(int i = 0; i < 4; i++){
+            int num = random.Next(0,20000);
+            PassPhrase += $"{AllWords.AllWords[num]} ";
+        }
+        ApplicationPassword = PassPhrase;
+        PassPhrase = "";
     }
 }

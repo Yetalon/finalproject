@@ -20,13 +20,6 @@ namespace aspbackend.Controllers
             _context = context;
         }
 
-        // GET: api/Users
-        // [HttpGet]
-        // public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        // {
-        //     return await _context.Users.ToListAsync();
-        // }
-
         [HttpGet("username/{userName}")]
         public async Task<ActionResult<User>> GetUserByUserName(string userName){
             var user = await _context.Users.FirstOrDefaultAsync(name => name.UserName == userName);
@@ -59,7 +52,22 @@ namespace aspbackend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            var existingUser = await _context.Users.FindAsync(id);
+            if(existingUser == null){
+                return NotFound();
+            }
+
+            if(user.UserName != existingUser.UserName){
+                var usernameExists = await _context.Users.AnyAsync(usernameExists => usernameExists.UserName == user.UserName);
+                if(usernameExists){
+                    return BadRequest("Username is already take.");
+                }
+                existingUser.UserName = user.UserName;
+            }
+
+            if(!string.IsNullOrEmpty(user.Password) && user.Password != existingUser.Password){
+                existingUser.Password = user.Password;
+            }
 
             try
             {

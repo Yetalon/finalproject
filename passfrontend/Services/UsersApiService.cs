@@ -14,7 +14,9 @@ namespace passfrontend.Services{
             var apiResponse = await httpClient.PostAsJsonAsync($"http://localhost:5218/api/Users/login", login);
             if(apiResponse.IsSuccessStatusCode){
                 var userResponse = await apiResponse.Content.ReadFromJsonAsync<User>();
-                return userResponse;
+                if(userResponse != null){
+                    return userResponse;
+                }
             }
             else if(apiResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized){
                 throw new Exception("Invalid username or password");
@@ -26,9 +28,6 @@ namespace passfrontend.Services{
         }
         public async Task<User> GetUserByUserName(string userName){
             var apiResponse = await httpClient.GetFromJsonAsync<User>($"http://localhost:5218/api/Users/username/{userName}");
-            if(apiResponse == null){
-                throw new Exception("Invalid user");
-            }
             return apiResponse;
         }
         public async Task<string> CreateUser(User newuser){
@@ -41,7 +40,28 @@ namespace passfrontend.Services{
                 return $"oopsie doopsie error: {error}";
             }
         }
-
+        public async Task<User> ChangeUser(long id, User user){
+            var apiResponse = await httpClient.PutAsJsonAsync($"http://localhost:5218/api/Users/{id}", user);
+            if(apiResponse.IsSuccessStatusCode){
+                return user;
+            }
+            else if(apiResponse.StatusCode == System.Net.HttpStatusCode.BadRequest){
+                throw new Exception("user does not match system");
+            }
+            else if(apiResponse.StatusCode == System.Net.HttpStatusCode.NotFound){
+                throw new Exception("User Not found");
+            }
+            else{
+                throw new Exception($"error: {apiResponse.StatusCode}");
+            }
+        }
+        public async Task<bool> DeleteUser(long id){
+            var apiResponse = await httpClient.DeleteAsync($"http://localhost:5218/api/Users/{id}");
+            if(apiResponse.IsSuccessStatusCode){
+                return true;
+            }
+            return false;
+        }
         public async Task<string> CreateApplication (Application application){
             var apiResponse = await httpClient.PostAsJsonAsync($"http://localhost:5218/api/StoredPasswords", application);
             if(apiResponse.IsSuccessStatusCode){
@@ -53,11 +73,18 @@ namespace passfrontend.Services{
             }
         }
         public async Task<IEnumerable<Application>> GetApplicationsAsync(long userId){
-            var apiResponse = await httpClient.GetFromJsonAsync<IEnumerable<Application>>($"http://localhost:5218/api/userid/{userId}");
+            var apiResponse = await httpClient.GetFromJsonAsync<IEnumerable<Application>>($"http://localhost:5218/api/StoredPasswords/userid/{userId}");
             if(apiResponse == null){
                 return new List<Application>();
             }
             return apiResponse;
+        }
+        public async Task<bool> DeleteApp(long id){
+            var apiResponse = await httpClient.DeleteAsync($"http://localhost:5218/api/StoredPasswords/{id}");
+            if(apiResponse.IsSuccessStatusCode){
+                return true;
+            }
+            throw new Exception("Removal failed");
         }
     }
 }

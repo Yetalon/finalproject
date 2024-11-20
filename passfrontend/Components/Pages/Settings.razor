@@ -1,0 +1,191 @@
+@using passfrontend.Models
+@using passfrontend.Services
+@using Blazored.LocalStorage
+@page "/settings"
+@inject UsersApiServices UsersApiService
+@inject UserStateService UserState
+@inject NavigationManager Navigate
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+<PageTitle>Settings</PageTitle>
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="username mb-4">
+        <h1>Change username</h1>
+        <hr>
+        <p>Current username: @UserState.CurrentUser?.UserName</p>
+        @if(!isChangingUserName){
+            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ChangeUsername>Change username</button>
+        }
+        else{
+            <div class="card text-start">
+                <div class="card-body">
+                    <h4 class="card-title">New username</h4>
+                    <input class="card-text" @bind=newUsername>
+                </div>
+                <p class="ps-3 text-danger">@message</p>
+                <div class="d-flex justify-content-start gap-5 m-2">
+                    <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ConfirmChangeUsername>Confirm</button>
+                    <button class="btn btn-dark btn-lg btn-outline-light align-content-end" @onclick=ChangeUsername>Close</button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="password mb-4">
+        <h1>Change password</h1>
+        <hr>
+        @if(!isChangingPassword){
+            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ChangePassword>Change password</button>
+        }
+        else{
+            <div class="card text-start">
+                <div class="card-body">
+                    <h4 class="card-title">New password</h4>
+                    <input class="card-text" type="password" @bind=newPassword>
+                </div>
+                <p class="ps-3 text-danger">@message</p>
+                <div class="d-flex justify-content-start gap-5 m-2">
+                    <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ConfirmChangePassword>Confirm</button>
+                    <button class="btn btn-dark btn-lg btn-outline-light align-content-end" @onclick=ChangePassword>Close</button>
+                </div>
+                
+            </div>
+        }
+    </div>
+    <div class="Delete">
+        <h1>Delete Account</h1>
+        <hr>
+        @if(!isDeletingUser){
+            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=DeleteUser>Delete Account</button>
+        }
+        else{
+            <div class="card text-start">
+                <div class="card-body">
+                    <h4 class="card-title">Delete Account</h4>
+                    <p class="card-text">Are you sure you want to delete your account</p>
+                </div>
+                <div class="d-flex justify-content-start gap-5 m-2">
+                    <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ConfirmDeleteUser>Confirm</button>
+                    <button class="btn btn-dark btn-lg btn-outline-light align-content-end" @onclick=DeleteUser>Close</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    string? message {get; set;}
+    string? userName {get; set;}
+    string? newUsername {get; set;}
+    string? newPassword {get; set;}
+    bool isChangingUserName {get; set;} = false;
+    bool isChangingPassword {get; set;} = false;
+    bool isDeletingUser {get; set;} = false;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            userName = await LocalStorage.GetItemAsync<string>("user");
+            if (!string.IsNullOrEmpty(userName))
+            {
+                try
+                {
+                    var response = await UsersApiService.GetUserByUserName(userName);
+                    if (response != null)
+                    {
+                        UserState.CurrentUser = response;
+                    }
+                }
+                catch
+                {
+                  Navigate.NavigateTo("/");
+                }
+            }
+            else
+            {
+                Navigate.NavigateTo("/");
+            }
+            StateHasChanged();
+        }
+    }
+    public void ChangeUsername(){
+        if(isChangingUserName){
+            isChangingUserName = false;
+        }
+        else{
+            isChangingUserName = true;
+        }
+    }
+    public async Task ConfirmChangeUsername(){
+        User newuser = new();
+        if(string.IsNullOrEmpty(newUsername)){
+            message = "username field is empty";
+            return;
+        }
+        newuser.UserName = newUsername;
+        newuser.Id = UserState.CurrentUser.Id;
+        newuser.Password = UserState.CurrentUser.Password;
+        try{
+            var response =  await UsersApiService.ChangeUser(UserState.CurrentUser.Id, newuser);
+            UserState.CurrentUser = response;
+            await LocalStorage.RemoveItemAsync("user");
+            await LocalStorage.SetItemAsync("user", UserState.CurrentUser.UserName);
+            isChangingUserName = false;
+            newUsername = null;
+            message = "";
+            StateHasChanged();
+        }
+        catch(Exception ex){
+            message = $"error: {ex}";
+        }
+    }
+    public void ChangePassword(){
+        if(isChangingPassword){
+            isChangingPassword = false;
+        }
+        else{
+            isChangingPassword = true;
+        }
+    }
+    public async Task ConfirmChangePassword(){
+        User newuser = new();
+        if(string.IsNullOrEmpty(newPassword)){
+            message = "password field is empty";
+            return;
+        }
+        newuser.UserName = UserState.CurrentUser.UserName;
+        newuser.Id = UserState.CurrentUser.Id;
+        newuser.Password = newPassword;
+        try{
+            var response = await UsersApiService.ChangeUser(UserState.CurrentUser.Id, newuser);
+            UserState.CurrentUser = response;
+            isChangingPassword = false;
+            newPassword = null;
+            message = "";
+            StateHasChanged();
+        }
+        catch(Exception ex){
+            message = $"error: {ex}";
+        }
+    }
+    public void DeleteUser(){
+        if(isDeletingUser){
+            isDeletingUser = false;
+        }
+        else{
+            isDeletingUser = true;
+        }
+    }
+    //Delete users apps as well
+    public async Task ConfirmDeleteUser(){
+        try{
+            var response = await UsersApiService.DeleteUser(UserState.CurrentUser.Id);
+            if(response == true){
+                UserState.LogOut();
+                await LocalStorage.RemoveItemAsync("user");
+                Navigate.NavigateTo("/");
+            }
+        }
+        catch{
+            message = "User deletion failed";
+        }
+    }
+}

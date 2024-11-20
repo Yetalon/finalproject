@@ -41,12 +41,12 @@ namespace aspbackend.Controllers
             return storedPassword;
         }
 
-        [HttpGet("/userid/{userId}")]
+        [HttpGet("userid/{userId}")]
         public async Task<ActionResult<IEnumerable<StoredPassword>>> GetUserPasswords(long userId){
             var storedPasswords = await _context.StoredPasswords.Where(storedPass => storedPass.UserId == userId).ToListAsync();
 
             if(storedPasswords.Count == 0){
-                return NotFound();
+                return new List<StoredPassword>();
             }            
             
             return storedPasswords;

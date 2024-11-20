@@ -30,3 +30,6 @@ C:\Users\Dukef\projects\csci2\finalproject\passfrontend\obj\Debug\net8.0\ref\pas
 C:\Users\Dukef\projects\csci2\finalproject\passfrontend\bin\Debug\net8.0\Blazored.LocalStorage.dll
 C:\Users\Dukef\projects\csci2\finalproject\passfrontend\obj\Debug\net8.0\passfrontend.csproj.AssemblyReference.cache
 C:\Users\Dukef\projects\csci2\finalproject\passfrontend\obj\Debug\net8.0\passfron.7E78A634.Up2Date
+C:\Users\Dukef\projects\csci2\finalproject\passfrontend\obj\Debug\net8.0\passfrontend.sourcelink.json
+C:\Users\Dukef\projects\csci2\finalproject\passfrontend\bin\Debug\net8.0\package-lock.json
+C:\Users\Dukef\projects\csci2\finalproject\passfrontend\bin\Debug\net8.0\package.json

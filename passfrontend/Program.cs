@@ -13,6 +13,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddScoped<UsersApiServices>();
 builder.Services.AddScoped<UserStateService>();
+builder.Services.AddScoped<GetWords>();
 
 var app = builder.Build();
 
