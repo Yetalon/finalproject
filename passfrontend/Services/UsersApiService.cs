@@ -86,5 +86,13 @@ namespace passfrontend.Services{
             }
             throw new Exception("Removal failed");
         }
+        public async Task<Application> ChangeApp(long id, Application app){
+            var apiResponse = await httpClient.PutAsJsonAsync($"http://localhost:5218/api/StoredPasswords/{id}", app);
+            if(apiResponse.IsSuccessStatusCode){
+               return app; 
+            }
+            var error = await apiResponse.Content.ReadAsStringAsync();
+            throw new Exception($"{error} {apiResponse.StatusCode}");
+        }
     }
 }

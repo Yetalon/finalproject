@@ -174,7 +174,6 @@
             isDeletingUser = true;
         }
     }
-    //Delete users apps as well
     public async Task ConfirmDeleteUser(){
         try{
             var response = await UsersApiService.DeleteUser(UserState.CurrentUser.Id);

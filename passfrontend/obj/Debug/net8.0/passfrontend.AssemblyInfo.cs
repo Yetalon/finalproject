@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("passfrontend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3751aeb5cf50829fb2f367caf1e266268349e35")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+008933292fa9d5861093d0eb2182c0c9dd783596")]
 [assembly: System.Reflection.AssemblyProductAttribute("passfrontend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("passfrontend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

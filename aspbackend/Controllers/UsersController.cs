@@ -124,6 +124,9 @@ namespace aspbackend.Controllers
             }
 
             _context.Users.Remove(user);
+            var apps = await _context.StoredPasswords.Where(storedPass => storedPass.UserId == id).ToListAsync();
+            _context.StoredPasswords.RemoveRange(apps);
+
             await _context.SaveChangesAsync();
 
             return NoContent();

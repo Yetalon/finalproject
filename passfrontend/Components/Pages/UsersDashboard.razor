@@ -24,19 +24,42 @@
         <div class="col-md-12">
             <p><strong>Username:</strong> @UserState.CurrentUser.UserName</p>
             @foreach(var app in Allapplications){
-                <div class="card p-3 mb-3 mx-auto" style="max-width: 400px;">
-                    <div class="card-body">
-                        <h5 class="card-title">@app.ApplicationName</h5>
-                        <p class="card-text">
-                            <strong>Username:</strong> @app.ApplicationUsername <br />
-                            <strong>Password:</strong> @app.ApplicationPassword <!-- Hide actual password for security -->
-                        </p>
-                        @* https://www.telerik.com/blogs/how-to-pass-arguments-to-your-onclick-functions-blazor *@
-                        <button class="btn btn-danger ms-2" @onclick="() => DeleteApp(app.Id)">Delete</button>
+                @if(app.Id != appToEdit){
+                    <div class="card p-3 mb-3 mx-auto" style="max-width: 400px;">
+                        <div class="card-body">
+                            <h5 class="card-title">@app.ApplicationName</h5>
+                            <p class="card-text">
+                                <strong>Username:</strong> @app.ApplicationUsername <br />
+                                <strong>Password:</strong> @app.ApplicationPassword <!-- Hide actual password for security -->
+                            </p>
+                            @* https://www.telerik.com/blogs/how-to-pass-arguments-to-your-onclick-functions-blazor *@
+                            <button class="btn btn-danger ms-2" @onclick="() => DeleteApp(app.Id)">Delete</button>
+                            <button class="btn btn-dark btn-outline-light align-content-md-end" @onclick="() => EditApp(app.Id)">Edit</button>
+                        </div>
                     </div>
-                </div>
+                }
+                else{
+                    <div class="card p-4 mx-auto" style="max-width: 400px;">
+                        <h3>Add Application</h3>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input class="form-control" @bind=applicationName>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>User Name</label>
+                            <input class="form-control"  @bind=applicationUserName>
+                        </div>
+                            <div class="form-group mt-2">
+                            <label class="mb-2">Password</label> 
+                            <br>
+                            <input class="form-control" type="text" @bind=applicationPassword>
+                        </div>
+                        <p>@message</p>
+                        <button class="btn btn-primary mt-3 w-100" @onclick="()=>ConfirmEdit(app.Id)">Save Changes</button>
+                    </div>
+                }
             }
-            <button @onclick=LogOut>Log out</button>
+            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=LogOut>Log out</button>
         </div>
     }
 </div>
@@ -45,10 +68,11 @@
     [Parameter]
     public string userName {get; set;}
     public List<Application> Allapplications = new();
-    public string ApplicationName {get; set;}
-    public string ApplicationUserName {get; set;}
-    public string ApplicationPassword {get; set;}
+    public string applicationName {get; set;}
+    public string applicationUserName {get; set;}
+    public string applicationPassword {get; set;}
     public string message {get; set;}
+    long appToEdit {get; set;} = -1;
 
     protected override async Task OnAfterRenderAsync(bool firstRender){
         if(firstRender){
@@ -92,5 +116,40 @@
         catch(Exception ex){
             message = $"Error: {ex}";
         }
+    }
+    public void EditApp(long appId){
+        appToEdit = appId;
+        Application app = Allapplications.FirstOrDefault(app => app.Id == appId);
+        applicationName = app.ApplicationName;
+        applicationUserName = app.ApplicationUsername;
+        applicationPassword = app.ApplicationPassword;
+        StateHasChanged();
+    }
+    public async Task ConfirmEdit(long appId){
+        if(string.IsNullOrEmpty(applicationName) || string.IsNullOrEmpty(applicationUserName) || string.IsNullOrEmpty(applicationPassword)){
+            message = "one or more fields are empty";
+            return;
+        }
+        Application editedApp = new(){
+            Id = appId,
+            ApplicationName = applicationName,
+            ApplicationPassword = applicationPassword,
+            ApplicationUsername = applicationUserName,
+            UserId = UserState.CurrentUser.Id
+        };
+        try{
+            var response = await UsersApiService.ChangeApp(appId, editedApp);
+            Application appToUpdate = Allapplications.FirstOrDefault(app => app.Id == appId);
+            if(response != null){
+                appToUpdate.ApplicationName = response.ApplicationName;
+                appToUpdate.ApplicationUsername = response.ApplicationUsername;
+                appToUpdate.ApplicationPassword = response.ApplicationPassword;
+            }
+            appToEdit = -1;
+        }
+        catch(Exception ex){
+            Console.WriteLine(ex);
+        }
+        StateHasChanged();
     }
 }
