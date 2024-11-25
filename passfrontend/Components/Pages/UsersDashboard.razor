@@ -54,7 +54,7 @@
                             <br>
                             <input class="form-control" type="text" @bind=applicationPassword>
                         </div>
-                        <p>@message</p>
+                        <p class="text-danger">@message</p>
                         <button class="btn btn-primary mt-3 w-100" @onclick="()=>ConfirmEdit(app.Id)">Save Changes</button>
                     </div>
                 }
@@ -151,5 +151,6 @@
             Console.WriteLine(ex);
         }
         StateHasChanged();
+        message = null;
     }
 }

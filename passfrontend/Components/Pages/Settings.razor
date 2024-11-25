@@ -50,7 +50,7 @@
             </div>
         }
     </div>
-    <div class="Delete">
+    <div class="Delete mb-4">
         <h1>Delete Account</h1>
         <hr>
         @if(!isDeletingUser){
@@ -68,6 +68,11 @@
                 </div>
             </div>
         }
+    </div>
+    <div class="Logout">
+        <h1>Logout</h1>
+        <hr>
+            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=Logout>Logout</button>
     </div>
 </div>
 
@@ -186,5 +191,10 @@
         catch{
             message = "User deletion failed";
         }
+    }
+        public async Task Logout(){
+        UserState.LogOut();
+        await LocalStorage.RemoveItemAsync("user");
+        Navigate.NavigateTo("/");
     }
 }
