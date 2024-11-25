@@ -1,0 +1,17 @@
+# Ignore bin and obj folders in all directories
+**/bin/
+**/obj/
+
+# Ignore frontend-specific files (if applicable)
+passfrontend/node_modules/
+passfrontend/dist/
+
+# Ignore backend-specific files (if applicable)
+aspbackend/wwwroot/
+aspbackend/appsettings.*.json
+
+# General ignores
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
