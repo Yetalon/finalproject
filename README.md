@@ -51,17 +51,16 @@ Blazor Password Manager is . The project includes both a **Blazor frontend** and
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Yetalon/Blazor-User-Management-System.git
-   cd Blazor-User-Management-System
-Set up the backend:
+   git clone https://github.com/Yetalon/finalproject.git
+   cd finalproject
+2. Set up the backend:
 
 Navigate to the backend folder (e.g., Backend).
 Run the following command to start the API:
-bash
-Copy code
-dotnet run
-The API will run on http://localhost:5000 by default.
-Set up the frontend:
+  ```bash
+  dotnet run
+-The API will run on http://localhost:5000 by default.
+-Set up the frontend:
 
 Navigate to the frontend folder (e.g., Frontend).
 Run the following command to start the Blazor app:
