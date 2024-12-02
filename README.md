@@ -62,7 +62,7 @@ Blazor Password Manager is . The project includes both a **Blazor frontend** and
   cd aspbackend
   dotnet watch run
   ```
-- The API will run on http://localhost:5218 by default. (you should not have to change this)
+- The API will run on http://localhost:5218 by default. ⚠️(you should not have to change this)
 
 3. Set up the frontend:
 
