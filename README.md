@@ -74,7 +74,7 @@ Blazor Password Manager is a project I created for my final project in **CSCI 12
   ```
 
 The application will be available at http://localhost:****. (replace with your port for the frontend)
-⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports.
+⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports. (these should be running in two seperate terminals)
 
 ---
 
