@@ -87,7 +87,7 @@ The application will be available at http://localhost:****. (Any port is fine)
 
 ---
 
-Folder Structure
+## Folder Structure
   ```bash
     FinalProject/
     ├── aspbackend/            # ASP.NET Core Web API
