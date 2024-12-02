@@ -36,8 +36,6 @@ Blazor User Management System is a user-friendly application designed for managi
 - **Database**: SQLite
 - **Other Libraries**:
   - [Blazored.LocalStorage](https://github.com/Blazored/LocalStorage)
-  - [PySimpleGUI](https://pysimplegui.readthedocs.io/) (if applicable for enhancements)
-
 ---
 
 ## Getting Started
