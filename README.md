@@ -16,7 +16,7 @@
 
 ## Introduction
 
-Blazor Password Manager is . The project includes both a **Blazor frontend** and an **ASP.NET Core Web API backend**, using SQLite as the database.
+Blazor Password Manager is a project i have made for my final project in csci1260. The project includes both a **Blazor frontend** and an **ASP.NET Core Web API backend**, using SQLite as the database.
 
 ---
 
