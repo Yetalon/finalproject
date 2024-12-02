@@ -1,4 +1,4 @@
-# Blazor User Management System
+# Blazor Password Manager
 
 ## Table of Contents
 
