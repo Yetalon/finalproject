@@ -1,4 +1,4 @@
-# Blazor User Management System
+# Blazor Password Manager
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@
 
 ## Introduction
 
-Blazor User Management System is a user-friendly application designed for managing user accounts and associated data securely. The project includes both a **Blazor WebAssembly frontend** and an **ASP.NET Core Web API backend**, using SQLite as the database.
+Blazor Password Manager is . The project includes both a **Blazor frontend** and an **ASP.NET Core Web API backend**, using SQLite as the database.
 
 ---
 
@@ -36,7 +36,6 @@ Blazor User Management System is a user-friendly application designed for managi
 - **Database**: SQLite
 - **Other Libraries**:
   - [Blazored.LocalStorage](https://github.com/Blazored/LocalStorage)
-  - [PySimpleGUI](https://pysimplegui.readthedocs.io/) (if applicable for enhancements)
 
 ---
 
