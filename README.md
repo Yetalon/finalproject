@@ -73,7 +73,7 @@ Blazor Password Manager is . The project includes both a **Blazor frontend** and
   dotnet watch run
   ```
 
-The application will be available at http://localhost:****. (Any port is fine)
+The application will be available at http://localhost:****. (Your port for the frontend)
 ⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports.
 
 ---
@@ -82,7 +82,8 @@ The application will be available at http://localhost:****. (Any port is fine)
 1. Open your browser and navigate to the Blazor app at http://localhost:****. (Your port)
 2. Create a new login on the login page
 3. Explore the following functionalities:
-- Dashboard: Manage application credentials.
+- Dashboard: Manage application.
+- Applications: Create new applications with unique passphrases.
 - Settings: Update account details or delete your profile.
 - Logout: End the session.
 
