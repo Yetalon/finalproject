@@ -35,14 +35,39 @@
 </div>
 
 @code{
+    /// <summary>
+    /// new application to store the application the user creates
+    /// </summary>
     public  Application application = new();
+    /// <summary>
+    /// Name of the application the user wants to create
+    /// </summary>
     public required string ApplicationName {get; set;}
+    /// <summary>
+    /// Username for the application the user wants to create
+    /// </summary>
     public required string ApplicationUserName {get; set;}
+    /// <summary>
+    /// Password for the application the user wants to create
+    /// </summary>
     public required string ApplicationPassword {get; set;}
+    /// <summary>
+    /// display message for creation of the app
+    /// </summary>
     public string? message {get; set;}
+    /// <summary>
+    /// display message if there is an error
+    /// </summary>
     public string? error {get; set;}
+    /// <summary>
+    /// The phass phrase that is randomly generated
+    /// </summary>
     public string? PassPhrase {get; set;}
-
+    /// <summary>
+    /// After the first render generates a list of all words from the words.txt file
+    /// also checks local storage to see if the user is already logged in
+    /// </summary>
+    /// <param name="firstRender">if the first render of the page is done it is true false otherwise</param>
     protected override async Task OnAfterRenderAsync(bool firstRender){
         if(firstRender){
             AllWords.FillAllWords();
@@ -67,14 +92,15 @@
             StateHasChanged();
         }
     }
+    /// <summary>
+    /// Creates the application with the entered values unless they are null or empty
+    /// </summary>
     public async Task CreateApplication(){
-        if (string.IsNullOrEmpty(ApplicationName) || string.IsNullOrEmpty(ApplicationUserName) || string.IsNullOrEmpty(ApplicationPassword))
-        {
+        if (string.IsNullOrEmpty(ApplicationName) || string.IsNullOrEmpty(ApplicationUserName) || string.IsNullOrEmpty(ApplicationPassword)){
             message = null;
             error = "Please fill in all the fields.";
             return;
         }
-
         application.ApplicationName = ApplicationName;
         application.ApplicationUsername = ApplicationUserName;
         application.ApplicationPassword = ApplicationPassword;
@@ -92,8 +118,11 @@
             error = $"Error: {ex.Message}";
         }
     }
+    /// <summary>
+    /// Picks a random number 4 times and gets the word from the prepoulated list of words that coresponds 
+    /// and builds a passphrase
+    /// </summary>
     public void GeneratePassPhrase(){
-        
         Random random = new();
         for(int i = 0; i < 4; i++){
             int num = random.Next(0,20000);

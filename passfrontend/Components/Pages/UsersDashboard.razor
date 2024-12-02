@@ -9,7 +9,6 @@
 
 <PageTitle>Dashboard</PageTitle>
 
-<h3>User Details</h3>
 <div class="row">
     @if (UserState.CurrentUser == null)
     {
@@ -22,7 +21,11 @@
     else
     {
         <div class="col-md-12">
-            <p><strong>Username:</strong> @UserState.CurrentUser.UserName</p>
+            <h1 class="text-center">Welcome, @UserState.CurrentUser.UserName</h1>
+            <hr>
+            @if(Allapplications.Count == 0){
+                <h1>No apps to display</h1>
+            }
             @foreach(var app in Allapplications){
                 @if(app.Id != appToEdit){
                     <div class="card p-3 mb-3 mx-auto" style="max-width: 400px;">
@@ -59,21 +62,48 @@
                     </div>
                 }
             }
+            <hr>
             <button class="btn btn-dark btn-lg btn-outline-light" @onclick=LogOut>Log out</button>
         </div>
     }
 </div>
 
 @code {
+    /// <summary>
+    /// The username parameter passed ot the page from the route
+    /// </summary>
     [Parameter]
     public string userName {get; set;}
+    /// <summary>
+    /// The list of applications assocatied with teh current user
+    /// </summary>
     public List<Application> Allapplications = new();
+    /// <summary>
+    /// The name of the application being edited
+    /// </summary>
     public string applicationName {get; set;}
+    /// <summary>
+    /// the username of the application being edited
+    /// </summary>
     public string applicationUserName {get; set;}
+    /// <summary>
+    /// the password of the application being edited
+    /// </summary>
     public string applicationPassword {get; set;}
+    /// <summary>
+    /// A message to display to the user
+    /// </summary>
     public string message {get; set;}
+    /// <summary>
+    /// The appid of the app to edit
+    /// </summary>
+    /// <value>default value of -1</value>
     long appToEdit {get; set;} = -1;
-
+    /// <summary>
+    /// After first rend checks localstorage to see if the user should already be logged in 
+    /// if user should not already be logged in it sends them ot the login page 
+    /// </summary>
+    /// <param name="firstRender">if the page has already been render it equals true false otherwise</param> 
     protected override async Task OnAfterRenderAsync(bool firstRender){
         if(firstRender){
             var userName = await LocalStorage.GetItemAsync<string>("user");
@@ -82,6 +112,9 @@
                     var response = await UsersApiService.GetUserByUserName(userName);
                     if(response != null){
                         UserState.CurrentUser = response;
+                    }
+                    else{
+                        Navigate.NavigateTo("/");
                     }
                 }
                 catch(Exception ex){
@@ -92,13 +125,19 @@
             StateHasChanged();
         }
     }
-    
+    /// <summary>
+    /// Logs the user out by clearing the current user and removing the localstorage of the user
+    /// it then redirects the user to the login page
+    /// </summary>
     public async Task LogOut(){
         UserState.LogOut();
         await LocalStorage.RemoveItemAsync("user");
         Navigate.NavigateTo("/");
     }
-
+    /// <summary>
+    /// Deletes a application from the user's list of applications and calls the api to remove it
+    /// </summary>
+    /// <param name="appId">The id of the app to delete</param>
     public async Task DeleteApp(long appId){
         try{
             var response = await UsersApiService.DeleteApp(appId);
@@ -117,6 +156,11 @@
             message = $"Error: {ex}";
         }
     }
+    /// <summary>
+    /// Sets the appto edit equal to the app id 
+    /// finds the app and sets the defualt information for the fields in the edit form
+    /// </summary>
+    /// <param name="appId">The id of the app to edit</param>
     public void EditApp(long appId){
         appToEdit = appId;
         Application app = Allapplications.FirstOrDefault(app => app.Id == appId);
@@ -125,6 +169,11 @@
         applicationPassword = app.ApplicationPassword;
         StateHasChanged();
     }
+    /// <summary>
+    /// Confirms and saves teh changes made to the application edit form
+    /// if non of the fields are empty passes the editied app to the API and saves teh changes
+    /// </summary>
+    /// <param name="appId">The id of the app to edit</param>
     public async Task ConfirmEdit(long appId){
         if(string.IsNullOrEmpty(applicationName) || string.IsNullOrEmpty(applicationUserName) || string.IsNullOrEmpty(applicationPassword)){
             message = "one or more fields are empty";

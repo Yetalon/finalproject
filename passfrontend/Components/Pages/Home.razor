@@ -28,11 +28,27 @@
 </div>
 
 @code {
+    /// <summary>
+    /// Users inputed username
+    /// </summary>
     string? UserName { get; set; }
+    /// <summary>
+    /// Users inputed password
+    /// </summary>
     string? Password { get; set; }
+    /// <summary>
+    /// message to dispaly to the user in case of error
+    /// </summary>
     string? message { get; set; }
-    Login userLogin = new();
-    User user = new();
+    /// <summary>
+    /// new Login to use for post
+    /// </summary>
+    Login userLogin = new(); 
+    /// <summary>
+    /// After first rend checks localstorage to see if user should already be logged in 
+    /// and if so sends the user to their dashboard
+    /// </summary>
+    /// <param name="firstRender">if the page has already been render it equals true false otherwise</param>
     protected override async Task OnAfterRenderAsync(bool firstRender){
         if(firstRender){
             var userName = await LocalStorage.GetItemAsync<string>("user");
@@ -55,10 +71,16 @@
         }
         StateHasChanged();
     }
+    /// <summary>
+    /// takes the users input for password and username and attempts to log them in
+    /// </summary>
     public async Task Login() {
+        if(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)){
+            message = "Error: one or more fields are empty";
+            return;
+        }
         userLogin.LoginUserName = UserName;
         userLogin.HashedPassword = Password;
-
         try {
             var response = await UsersApiService.GetUser(userLogin);
             if (response == null) {
@@ -70,7 +92,7 @@
             }
         }
         catch (Exception ex) {
-            message = $"Error: {ex.Message}";
+            message = $"Invalid login";
         }
         UserName = "";
         Password = "";

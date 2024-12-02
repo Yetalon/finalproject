@@ -9,11 +9,11 @@
 <PageTitle>Settings</PageTitle>
 <div class="row d-flex justify-content-center align-items-center">
     <div class="username mb-4">
-        <h1>Change username</h1>
+        <h1>Change Username</h1>
         <hr>
-        <p>Current username: @UserState.CurrentUser?.UserName</p>
+        <p>Current Username: @UserState.CurrentUser?.UserName</p>
         @if(!isChangingUserName){
-            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ChangeUsername>Change username</button>
+            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ChangeUsername>Change Username</button>
         }
         else{
             <div class="card text-start">
@@ -30,10 +30,10 @@
         }
     </div>
     <div class="password mb-4">
-        <h1>Change password</h1>
+        <h1>Change Password</h1>
         <hr>
         @if(!isChangingPassword){
-            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ChangePassword>Change password</button>
+            <button class="btn btn-dark btn-lg btn-outline-light" @onclick=ChangePassword>Change Password</button>
         }
         else{
             <div class="card text-start">
@@ -77,15 +77,40 @@
 </div>
 
 @code {
+    /// <summary>
+    /// message to display to the user
+    /// </summary>
     string? message {get; set;}
+    /// <summary>
+    /// The current username
+    /// </summary>
     string? userName {get; set;}
+    /// <summary>
+    /// The new username to change to
+    /// </summary>
     string? newUsername {get; set;}
+    /// <summary>
+    /// the new password to change to
+    /// </summary>
     string? newPassword {get; set;}
+    /// <summary>
+    /// Indicates whether the username is being changed
+    /// </summary>
     bool isChangingUserName {get; set;} = false;
+    /// <summary>
+    /// Indicates whether the password is being changed
+    /// </summary>
     bool isChangingPassword {get; set;} = false;
+    /// <summary>
+    /// indicates whether the user is being deleted
+    /// </summary>
     bool isDeletingUser {get; set;} = false;
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
+    /// <summary>
+    /// After first rend checks localstorage to see if user should already be logged in 
+    /// if user should not already be logged in sends them ot the login screen
+    /// </summary>
+    /// <param name="firstRender">if the page has already been render it equals true false otherwise</param> 
+    protected override async Task OnAfterRenderAsync(bool firstRender){
         if (firstRender)
         {
             userName = await LocalStorage.GetItemAsync<string>("user");
@@ -111,6 +136,9 @@
             StateHasChanged();
         }
     }
+    /// <summary>
+    /// Toggles the username change form
+    /// </summary>
     public void ChangeUsername(){
         if(isChangingUserName){
             isChangingUserName = false;
@@ -119,6 +147,10 @@
             isChangingUserName = true;
         }
     }
+    /// <summary>
+    /// Confirms and saves the new username for the user
+    /// If the username field is empty an error message is displayed
+    /// </summary>
     public async Task ConfirmChangeUsername(){
         User newuser = new();
         if(string.IsNullOrEmpty(newUsername)){
@@ -139,9 +171,12 @@
             StateHasChanged();
         }
         catch(Exception ex){
-            message = $"error: {ex}";
+            message = "error: username already exists";
         }
     }
+    /// <summary>
+    /// Toggles the password change form
+    /// </summary>
     public void ChangePassword(){
         if(isChangingPassword){
             isChangingPassword = false;
@@ -150,6 +185,10 @@
             isChangingPassword = true;
         }
     }
+    /// <summary>
+    /// Confirms and saves the new password for the user
+    /// if the password field is empty an error message is displayed
+    /// </summary>
     public async Task ConfirmChangePassword(){
         User newuser = new();
         if(string.IsNullOrEmpty(newPassword)){
@@ -171,6 +210,9 @@
             message = $"error: {ex}";
         }
     }
+    /// <summary>
+    /// Toggles the account deltion confrimation form
+    /// </summary>
     public void DeleteUser(){
         if(isDeletingUser){
             isDeletingUser = false;
@@ -179,6 +221,11 @@
             isDeletingUser = true;
         }
     }
+    /// <summary>
+    /// Confrims and deletes the user's account
+    /// if successful logs the userout and returns them to the login page
+    /// if the deletion fails it displays an error message
+    /// </summary>
     public async Task ConfirmDeleteUser(){
         try{
             var response = await UsersApiService.DeleteUser(UserState.CurrentUser.Id);
@@ -192,7 +239,11 @@
             message = "User deletion failed";
         }
     }
-        public async Task Logout(){
+    /// <summary>
+    /// Logs the user out by clearing the current user and removing the localstorage of the user
+    /// it then redirects the user to the login page
+    /// </summary>
+    public async Task Logout(){
         UserState.LogOut();
         await LocalStorage.RemoveItemAsync("user");
         Navigate.NavigateTo("/");

@@ -25,12 +25,30 @@
 </div>
 
 @code{
+    /// <summary>
+    /// users inputed username
+    /// </summary>
     string? UserName{get; set;}
+    /// <summary>
+    /// users inputed password
+    /// </summary>
     string? UserPassword {get; set;}
+    /// <summary>
+    /// new user to hold the values the user inputs for creation
+    /// </summary>
     User user = new();
+    /// <summary>
+    /// message to display when creation is successful or failed
+    /// </summary>
     private string? message {get; set;}
-
+    /// <summary>
+    /// Takes the inputed username and password creates the user
+    /// </summary>
     public async Task CreateUser(){
+        if(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(UserPassword)){
+            message = "Error: one or more fields are empty";
+            return;
+        }
         user.UserName = UserName;
         user.Password = UserPassword;
         message = await UsersApiService.CreateUser(user);
