@@ -16,7 +16,7 @@
 
 ## Introduction
 
-Blazor Password Manager is a project i have made for my final project in csci1260. The project includes both a **Blazor frontend** and an **ASP.NET Core Web API backend**, using SQLite as the database.
+Blazor Password Manager is a project I created for my final project in **CSCI 1260**. The project includes a **Blazor frontend** and an **ASP.NET Core Web API backend**, with **SQLite** as the database.
 
 ---
 
@@ -24,7 +24,7 @@ Blazor Password Manager is a project i have made for my final project in csci126
 
 - **User Authentication**: Log in, log out, and manage sessions.
 - **Password Management**: Store, retrieve, and manage application-specific credentials.
-- **Account Management**: Change username, update passwords, and delete accounts.
+- **Account Management**: Change username, update passwords, and delete account.
 - **Responsive Design**: Optimized for different screen sizes.
 
 ---
@@ -44,7 +44,7 @@ Blazor Password Manager is a project i have made for my final project in csci126
 ### Prerequisites
 
 - [.NET SDK](https://dotnet.microsoft.com/download) (8.0 or later)
-- A modern web browser (e.g., Chrome, Edge, or Firefox)
+- A modern web browser
 
 ### Setup
 
@@ -73,18 +73,18 @@ Blazor Password Manager is a project i have made for my final project in csci126
   dotnet watch run
   ```
 
-The application will be available at http://localhost:****. (Your port for the frontend)
+The application will be available at http://localhost:****. (replace with your port for the frontend)
 ⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports.
 
 ---
 
 ## Usage
-1. Open your browser and navigate to the Blazor app at http://localhost:****. (Your port)
+1. Open your browser and navigate to the Blazor app at http://localhost:****. (replace with your port)
 2. Create a new login on the login page
 3. Explore the following functionalities:
    - **Dashboard**: Manage application.
    - **Applications**: Create new applications with unique passphrases.
-   - **Settings**: Update account details or delete your profile.
+   - **Settings**: Update account details or delete your account.
    - **Logout**: End the session.
 
 ---
@@ -108,6 +108,6 @@ The application will be available at http://localhost:****. (Your port for the f
 ## Future Enhancements
 - Deploy both frontend and backend to a shared hosting environment.
 - Implement encryption for stored passwords.
-- Introduce role-based access control (e.g., admin vs regular users).
+- Introduce role-based access control (admin vs regular users).
 - Add integration tests for improved reliability.
 - Enhance UI.
