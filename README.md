@@ -4,7 +4,7 @@
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Technologies](#technologies)
+- [Framework](#technologies)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Setup](#setup)
@@ -43,7 +43,7 @@ Blazor Password Manager is . The project includes both a **Blazor frontend** and
 
 ### Prerequisites
 
-- [.NET SDK](https://dotnet.microsoft.com/download) (6.0 or later)
+- [.NET SDK](https://dotnet.microsoft.com/download) (8.0 or later)
 - A modern web browser (e.g., Chrome, Edge, or Firefox)
 
 ### Setup
@@ -56,47 +56,56 @@ Blazor Password Manager is . The project includes both a **Blazor frontend** and
    ```
 2. Set up the backend:
 
-Navigate to the backend folder (e.g., Backend).
+Navigate to the backend folder (e.g., aspbackend).
 Run the following command to start the API:
   ```bash
-  dotnet run
+  cd aspbackend
+  dotnet watch run
   ```
 -The API will run on http://localhost:5218 by default. (you should not have to change this)
 
 3. Set up the frontend:
 
-- Navigate to the frontend folder (e.g., Frontend).
+- Navigate to the frontend folder (e.g., passfrontend).
 - Run the following command to start the Blazor app:
   ```bash
-  dotnet run
+  cd passfrontend
+  dotnet watch run
   ```
 The application will be available at http://localhost:****. (Any port is fine)
 ⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports.
 
-Usage
-Open your browser and navigate to the Blazor app at http://localhost:****. (Your port)
-Use the login form to authenticate and manage your account.
-Explore the following functionalities:
-Dashboard: Manage application credentials.
-Settings: Update account details or delete your profile.
-Logout: End the session.
+---
+
+## Usage
+1. Open your browser and navigate to the Blazor app at http://localhost:****. (Your port)
+2. Create a new login on the login page
+3. Explore the following functionalities:
+- Dashboard: Manage application credentials.
+- Settings: Update account details or delete your profile.
+- Logout: End the session.
+
+---
+
 Folder Structure
   ```bash
     FinalProject/
-    ├── Backend/               # ASP.NET Core Web API
+    ├── aspbackend/            # ASP.NET Core Web API
     │   ├── Controllers/       # API Controllers
     │   ├── Models/            # Database Models
-    │   ├── Services/          # Business Logic Services
     │   └── Program.cs         # Application Entry Point
-    ├── Frontend/              # Blazor WebAssembly
+    ├── passfrontend/          # Blazor WebAssembly
     │   ├── Pages/             # Blazor Pages
-    │   ├── Services/          # API Consumption Services
+    │   ├── Services/          # API, User, and Passphrase services
     │   └── Program.cs         # Blazor App Entry Point
     └── README.md              # Project Documentation
   ```
-Future Enhancements
-Deploy both frontend and backend to a shared hosting environment.
-Implement encryption for stored passwords.
-Introduce role-based access control (e.g., admin vs regular users).
-Add integration tests for improved reliability.
-Enhance UI with advanced styling frameworks.
+
+---
+
+## Future Enhancements
+- Deploy both frontend and backend to a shared hosting environment.
+- Implement encryption for stored passwords.
+- Introduce role-based access control (e.g., admin vs regular users).
+- Add integration tests for improved reliability.
+- Enhance UI.
