@@ -56,13 +56,13 @@ Blazor Password Manager is . The project includes both a **Blazor frontend** and
    ```
 2. Set up the backend:
 
-Navigate to the backend folder (e.g., aspbackend).
-Run the following command to start the API:
+- Navigate to the backend folder (e.g., aspbackend).
+- Run the following command to start the API:
   ```bash
   cd aspbackend
   dotnet watch run
   ```
--The API will run on http://localhost:5218 by default. (you should not have to change this)
+- The API will run on http://localhost:5218 by default. (you should not have to change this)
 
 3. Set up the frontend:
 
