@@ -82,10 +82,10 @@ The application will be available at http://localhost:****. (Your port for the f
 1. Open your browser and navigate to the Blazor app at http://localhost:****. (Your port)
 2. Create a new login on the login page
 3. Explore the following functionalities:
-   - Dashboard: Manage application.
-   - Applications: Create new applications with unique passphrases.
-   - Settings: Update account details or delete your profile.
-   - Logout: End the session.
+   - **Dashboard**: Manage application.
+   - **Applications**: Create new applications with unique passphrases.
+   - **Settings**: Update account details or delete your profile.
+   - **Logout**: End the session.
 
 ---
 
