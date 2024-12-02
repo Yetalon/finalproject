@@ -72,6 +72,7 @@ Blazor Password Manager is . The project includes both a **Blazor frontend** and
   cd passfrontend
   dotnet watch run
   ```
+
 The application will be available at http://localhost:****. (Any port is fine)
 ⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports.
 
