@@ -53,44 +53,47 @@ Blazor Password Manager is . The project includes both a **Blazor frontend** and
    ```bash
    git clone https://github.com/Yetalon/finalproject.git
    cd finalproject
+   ```
 2. Set up the backend:
 
 Navigate to the backend folder (e.g., Backend).
 Run the following command to start the API:
   ```bash
   dotnet run
--The API will run on http://localhost:5000 by default.
--Set up the frontend:
+  ```
+-The API will run on http://localhost:5218 by default. (you should not have to change this)
 
-Navigate to the frontend folder (e.g., Frontend).
-Run the following command to start the Blazor app:
-bash
-Copy code
-dotnet run
-The application will be available at http://localhost:5001.
+3. Set up the frontend:
+
+- Navigate to the frontend folder (e.g., Frontend).
+- Run the following command to start the Blazor app:
+  ```bash
+  dotnet run
+  ```
+The application will be available at http://localhost:****. (Any port is fine)
 ⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports.
 
 Usage
-Open your browser and navigate to the Blazor WebAssembly app at http://localhost:5001.
+Open your browser and navigate to the Blazor app at http://localhost:****. (Your port)
 Use the login form to authenticate and manage your account.
 Explore the following functionalities:
 Dashboard: Manage application credentials.
 Settings: Update account details or delete your profile.
 Logout: End the session.
 Folder Structure
-bash
-Copy code
-Blazor-User-Management-System/
-├── Backend/               # ASP.NET Core Web API
-│   ├── Controllers/       # API Controllers
-│   ├── Models/            # Database Models
-│   ├── Services/          # Business Logic Services
-│   └── Program.cs         # Application Entry Point
-├── Frontend/              # Blazor WebAssembly
-│   ├── Pages/             # Blazor Pages
-│   ├── Services/          # API Consumption Services
-│   └── Program.cs         # Blazor App Entry Point
-└── README.md              # Project Documentation
+  ```bash
+    FinalProject/
+    ├── Backend/               # ASP.NET Core Web API
+    │   ├── Controllers/       # API Controllers
+    │   ├── Models/            # Database Models
+    │   ├── Services/          # Business Logic Services
+    │   └── Program.cs         # Application Entry Point
+    ├── Frontend/              # Blazor WebAssembly
+    │   ├── Pages/             # Blazor Pages
+    │   ├── Services/          # API Consumption Services
+    │   └── Program.cs         # Blazor App Entry Point
+    └── README.md              # Project Documentation
+  ```
 Future Enhancements
 Deploy both frontend and backend to a shared hosting environment.
 Implement encryption for stored passwords.
