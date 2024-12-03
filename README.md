@@ -59,7 +59,6 @@ Blazor Password Manager is a project I created for my final project in **CSCI 12
 - Navigate to the backend folder (e.g., aspbackend).
 - Run the following command to start the API:
   ```bash
-  cd aspbackend
   dotnet watch run
   ```
 - The API will run on http://localhost:5218 by default. ⚠️(you should not change this)
@@ -69,7 +68,6 @@ Blazor Password Manager is a project I created for my final project in **CSCI 12
 - Navigate to the frontend folder (e.g., passfrontend).
 - Run the following command to start the Blazor app:
   ```bash
-  cd passfrontend
   dotnet watch run
   ```
 
