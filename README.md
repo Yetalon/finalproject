@@ -20,7 +20,7 @@ Blazor Password Manager is a project I created for my final project in **CSCI 12
 
 ---
 
-## Stack
+## Features
 
 - **User Authentication**: Log in, log out, and manage sessions.
 - **Password Management**: Store, retrieve, and manage application-specific credentials.
@@ -29,7 +29,7 @@ Blazor Password Manager is a project I created for my final project in **CSCI 12
 
 ---
 
-## Technologies
+## Stack
 
 - **Frontend**: Blazor WebAssembly
 - **Backend**: ASP.NET Core Web API
