@@ -1,33 +1,7 @@
 # Blazor Password Manager
 
-## Table of Contents
+Blazor Password Manager is a project I created for my final project in **CSCI 1260**. The project includes is made up of **Blazor frontend**, **ASP.NET Core Web API backend**, with **SQLite** as the database. The password manager allows users generate random passphrases from a list of 20,000 words and to store their information for different applications. The apps can be edited and deleted from the dashboard. The user can also customize their login with changing their username, password, and deleteing their account. The app also takes use of bootstrap 5 to provide a responsive design for different screen sizes.
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Framework](#Stack)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Setup](#setup)
-- [Usage](#usage)
-- [Folder Structure](#folder-structure)
-- [Future Enhancements](#future-enhancements)
-
----
-
-## Introduction
-
-Blazor Password Manager is a project I created for my final project in **CSCI 1260**. The project includes is made up of **Blazor frontend**, **ASP.NET Core Web API backend**, with **SQLite** as the database.
-
----
-
-## Features
-
-- **User Authentication**: Log in, log out, and manage sessions.
-- **Password Management**: Store, retrieve, and manage application-specific credentials.
-- **Account Management**: Change username, update passwords, and delete account.
-- **Responsive Design**: Optimized for different screen sizes.
-
----
 
 ## Stack
 
@@ -37,7 +11,6 @@ Blazor Password Manager is a project I created for my final project in **CSCI 12
 - **Other Libraries**:
   - [Blazored.LocalStorage](https://github.com/Blazored/LocalStorage)
 
----
 
 ## Getting Started
 
@@ -74,7 +47,6 @@ Blazor Password Manager is a project I created for my final project in **CSCI 12
 The application will be available at http://localhost:****. (replace with your port for the frontend)
 ⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports. (these should be running in two seperate terminals)
 
----
 
 ## Usage
 1. Open your browser and navigate to the Blazor app at http://localhost:****. (replace with your port)
@@ -85,7 +57,6 @@ The application will be available at http://localhost:****. (replace with your p
    - **Settings**: Update account details or delete your account.
    - **Logout**: End the session.
 
----
 
 ## Folder Structure
   ```bash
@@ -101,7 +72,6 @@ The application will be available at http://localhost:****. (replace with your p
     └── README.md              # Project Documentation
   ```
 
----
 
 ## Future Enhancements
 - Deploy both frontend and backend to a shared hosting environment.
