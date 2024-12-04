@@ -43,7 +43,12 @@ Blazor Password Manager is a project I created for my final project in **CSCI 12
   ```bash
   dotnet watch run
   ```
-
+After running you should get an output similar to this. It should also open the webpage in a browser automatically.
+  ```bash
+  dotnet watch 🚀 Started
+  info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5058
+  ```
 The application will be available at http://localhost:****. (replace with your port for the frontend)
 ⚠️ Note: Ensure both the backend and frontend are running simultaneously on their respective localhost ports. (these should be running in two seperate terminals)
 
