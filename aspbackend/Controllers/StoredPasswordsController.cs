@@ -66,6 +66,7 @@ namespace aspbackend.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         /// <summary>
         /// Default put auto generated
+        /// Used to change the applications name, username, or password 
         /// </summary>
         /// <param name="id">app's Id</param>
         /// <param name="storedPassword">the whole application</param>

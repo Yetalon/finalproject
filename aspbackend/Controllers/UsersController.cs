@@ -149,7 +149,7 @@ namespace aspbackend.Controllers
         }
         // DELETE: api/Users/5
         /// <summary>
-        /// Defaul Delete auto generated
+        /// Default Delete auto generated
         /// Takes the user id and delets the user from the database and all their apps
         /// </summary>
         /// <param name="id">the user's id</param>
@@ -172,7 +172,7 @@ namespace aspbackend.Controllers
             return NoContent();
         }
         /// <summary>
-        /// Defaul method
+        /// Default method
         /// used to check if a user exist
         /// </summary>
         /// <param name="id">user's id</param>

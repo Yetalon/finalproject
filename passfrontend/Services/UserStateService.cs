@@ -14,7 +14,7 @@ namespace passfrontend.Services{
         /// </summary>
         public bool LoggedIn {get; set;}
         /// <summary>
-        /// Sets teh current user to the user that logged in
+        /// Sets the current user to the user that logged in
         /// </summary>
         /// <param name="user">the user to set to current user</param>
         public void LogIn(User user){
