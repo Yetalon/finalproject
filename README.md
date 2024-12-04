@@ -1,6 +1,6 @@
 # Blazor Password Manager
 
-Blazor Password Manager is a project I created for my final project in **CSCI 1260**. The password manager allows users generate random passphrases from a list of 20,000 words and to store their information for different applications. The apps can be edited and deleted from the dashboard. The user can also customize their login with changing their username, password, and deleteing their account. The app also takes use of bootstrap 5 to provide a responsive design for different screen sizes.
+Blazor Password Manager is a project I created for my final project in **CSCI 1260**. The password manager allows users generate random passphrases from a list of 20,000 words and to store their information for different applications. The apps can be edited and deleted from the dashboard. The user can also customize their login with changing their username, password, and delete their account. The app also takes use of bootstrap 5 to provide a responsive design for different screen sizes.
 
 
 ## Stack
